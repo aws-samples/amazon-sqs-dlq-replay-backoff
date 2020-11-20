@@ -1,6 +1,8 @@
-# SQS dead letter replay
+# SQS dead letter queue replay with backoff and jitter
 
-This serverless app deploys a SQS queue, linked with a dead letter queue (DLQ). A lambda function replays each message of the DLQ with an exponential backoff and jitter. After some unseccessful retries, messages are moved to a second DLQ.
+The theory behind the implementation is described in this article: [Exponential backoff and jitter](https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/)
+
+This serverless application deploys an Amazon SQS queue, linked with a dead letter queue (DLQ). A lambda function replays each message of the DLQ with an exponential backoff and jitter. After some unseccessful retries, messages are moved to a second DLQ.
 
 ## App Architecture
 
@@ -31,6 +33,10 @@ Choose if you want to deploy using the Serverless Application Repository or leve
 1. `ReplayDeadLetterQueue` - Internal SQS dead letter queue.
 1. `DeadLetterQueue`- SQS dead letter queue containing replayed messages still not processed
 
-## License Summary
+## Security
 
-This code is made available under the MIT-0 license. See the LICENSE file.
+See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+
+## License
+
+This library is licensed under the MIT-0 License. See the LICENSE file.
