@@ -19,7 +19,7 @@ def handler(event, context):
     LOG.debug('Interval(s): %s', config.INTERVAL_SECONDS)
     LOG.debug('Max attemps: %s', config.MAX_ATTEMPS)
     LOG.debug('Backoff rate: %s', config.BACKOFF_RATE)
-    LOG.debug('Message retention period rate: %s', config.MESSAGE_RETENTION_PERIOD)
+    LOG.debug('Message retention period: %s', config.MESSAGE_RETENTION_PERIOD)
 
     for record in event['Records']:
         nbReplay = 0
@@ -34,18 +34,23 @@ def handler(event, context):
 
         # SQS attributes
         attributes = record['messageAttributes']
-        attributes.update({'sqs-dlq-replay-nb': {'StringValue': str(nbReplay), 'DataType': 'Number'}})
+        attributes.update(
+            {'sqs-dlq-replay-nb': {'StringValue': str(nbReplay), 'DataType': 'Number'}})
 
         LOG.debug("SQS message attributes: %s", attributes)
         _sqs_attributes_cleaner(attributes)
         LOG.debug("SQS message attributes cleaned: %s", attributes)
 
         # Backoff
-        b = backoff.ExpoBackoffFullJitter(base=config.BACKOFF_RATE, cap=config.MESSAGE_RETENTION_PERIOD)
+        b = backoff.ExpoBackoffFullJitter(
+            base=config.BACKOFF_RATE, 
+            cap=config.MESSAGE_RETENTION_PERIOD)
         delaySeconds = b.backoff(n=int(nbReplay))
 
         # SQS
-        LOG.info("Message replayed to main SQS queue with delayseconds: %s", delaySeconds)
+        msgreplay = "Message replayed to main SQS queue with delayseconds"
+        LOG.info(msgreplay + "%s", delaySeconds)
+        
         SQS.send_message(
             QueueUrl=config.SQS_MAIN_URL,
             MessageBody=record['body'],
@@ -73,7 +78,8 @@ class MaxAttempsError(Exception):
     def __init__(self, replay, max, msg=None):
         """Init."""
         if msg is None:
-            msg = "An error occured : Number of retries(%s) is sup max attemps(%s)" % (replay, max)
+            msg = "An error occured : " 
+            "Number of retries(%s) is sup max attemps(%s)" % (replay, max)
         super(MaxAttempsError, self).__init__(msg)
         self.replay = replay
         self.max = max

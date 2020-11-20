@@ -5,7 +5,7 @@ Metadata:
   AWS::ServerlessRepo::Application:
     Name: amazon-sqs-dlq-replay-backoff
     Description: Using an Amazon SQS dead letter queue as en event source, trigger a lambda to replay a message to the main queue.
-    Author: Guillaume Marchand and Luke Hargreaves
+    Author: Guillaume Marchand, Luke Hargreaves, Alexandre Pinhel
     SpdxLicenseId: MIT
     LicenseUrl: LICENSE
     ReadmeUrl: README.md

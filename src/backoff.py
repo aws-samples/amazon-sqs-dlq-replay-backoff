@@ -1,5 +1,5 @@
-"""Backoff classes coming from https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/."""
-
+"""Backoff classes coming from 
+https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/."""
 import random
 
 
@@ -23,5 +23,5 @@ class ExpoBackoffFullJitter(Backoff):
         """Full jitter backoff function."""
         base = self.expo(n)
         fulljitter = random.uniform(0, base)
-        # print(print("Base Backoff: %s - Full Jitter Backoff: %s" % (base, fulljitter)))
+        # print("Backoff: %s - Full Jitter Backoff: %s" % (base, fulljitter))
         return fulljitter
