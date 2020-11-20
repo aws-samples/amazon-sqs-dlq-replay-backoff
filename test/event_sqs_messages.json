@@ -1,0 +1,41 @@
+{
+    "Records": [
+        {
+            "messageId": "2ac3d0a8-1815-4ed7-aad7-bd5befe90700",
+            "receiptHandle": "AQEBJIGbQiRCtXfdtinzgXeK2Bd6Lz37Tj8d6gEof9ESAoMEOVfgkRPFbMdFe8mWHeIdrLCP1uEHPC/t1lRK49Ikb3KMllOVQlVnoLRa+f6NvgGlp7SfLJtqa4uo0dJTEO2SN6bZKfX6laUDc9H448ArIoJq4hqLsJrnANp92xObcmLh9EYfaE9olAAbSH9u/Wp6+7fbEu3pvdJJjbLZIocBIV2VptPVFFNE+ZjVZoMuFqgR1Kn8ce227F3exoqOHZWOtBU+tsQpDkrdX4tcIPyHGxTXBQkCpGd6+WJavCmGPK19DdhF05a2smBjZRBrShO2gFmZxkQg7Z2/Zw9lZwcr51aCfYcWImgbKAury0BnHo32Ffrp7r4X++G1hBAU5TAZ18LJlJmQpaAh9gG61o1kRWy5Ub4R5/KGo5/2swoEhvg=",
+            "body": "Hello world",
+            "attributes": {
+                "ApproximateReceiveCount": "1",
+                "SentTimestamp": "1563293665252",
+                "SenderId": "AROAIAE6ICDTWSZQPHG4M:gmarchan-Isengard",
+                "ApproximateFirstReceiveTimestamp": "1563293665351"
+            },
+            "messageAttributes": {
+                "attr2": {
+                    "stringValue": "2",
+                    "stringListValues": [],
+                    "binaryListValues": [],
+                    "dataType": "Number"
+                },
+                "attr1": {
+                    "stringValue": "Hello world",
+                    "stringListValues": [],
+                    "binaryListValues": [],
+                    "dataType": "String"
+                },
+                "sqs-dlq-replay-nb": {
+                    "stringValue": "1",
+                    "stringListValues": [],
+                    "binaryListValues": [],
+                    "dataType": "Number"
+                }
+
+            },
+            "md5OfMessageAttributes": "d4e7c5408a1c6c8bd99f6cab05469692",
+            "md5OfBody": "b10a8db164e0754105b7a99be72e3fe5",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:aws:sqs:eu-west-1:862440218923:sqs-dlq-replay-DeadLetterQeue-1R3I1WAA4RRBB",
+            "awsRegion": "eu-west-1"
+        }
+    ]
+}
