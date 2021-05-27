@@ -4,14 +4,15 @@ Transform: AWS::Serverless-2016-10-31
 Metadata:
   AWS::ServerlessRepo::Application:
     Name: amazon-sqs-dlq-replay-backoff
-    Description: Using an Amazon SQS dead letter queue as en event source, trigger a lambda to replay a message to the main queue.
-    Author: Guillaume Marchand, Luke Hargreaves, Alexandre Pinhel
-    SpdxLicenseId: MIT
-    LicenseUrl: LICENSE
-    ReadmeUrl: README.md
-    Labels: [Amazon sqs, dlq, queue, backoff]
-    HomePageUrl: https://github.com/awssamples/amazon-sqs-dlq-replay-backoff
+    Description: Using an Amazon SQS dead letter queue as en event source, trigger a lambda to replay messages to the main queue.
+    Author: pinhel
+    SpdxLicenseId: MIT-0
+    LicenseUrl: ./LICENSE
+    ReadmeUrl: ./README.md
+    Labels: [sqs, dlq, replay, queue, backoff]
+    HomePageUrl: https://github.com/aws-samples/amazon-sqs-dlq-replay-backoff
     SemanticVersion: 1.0.0
+    SourceCodeUrl: https://github.com/aws-samples/amazon-sqs-dlq-replay-backoff
 
   AWS::CloudFormation::Interface:
     ParameterGroups:
@@ -108,6 +109,7 @@ Resources:
       MessageRetentionPeriod: !Ref 'MessageRetentionPeriod'
       ReceiveMessageWaitTimeSeconds: !Ref 'ReceiveMessageWaitTimeSeconds'
       VisibilityTimeout: !Ref 'VisibilityTimeout'
+      KmsMasterKeyId: 'alias/aws/sqs'
       RedrivePolicy:
         deadLetterTargetArn: !GetAtt 'ReplayDeadLetterQueue.Arn'
         maxReceiveCount: !Ref 'maxReceiveCount'
