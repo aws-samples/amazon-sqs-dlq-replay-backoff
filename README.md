@@ -2,7 +2,7 @@
 
 The theory behind the implementation is described in this article: [Exponential backoff and jitter](https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/)
 
-This serverless application deploys an Amazon SQS queue, linked with a dead letter queue (DLQ). An AWS lambda function replays each message of the DLQ with an exponential backoff and jitter. After some unseccessful retries, messages are moved to a second DLQ.
+This serverless application deploys an Amazon SQS queue, linked with a dead letter queue (DLQ). An AWS lambda function replays each message of the DLQ with an exponential backoff and jitter. After some unsuccessful retries, messages are moved to a second DLQ.
 
 ## App Architecture
 
