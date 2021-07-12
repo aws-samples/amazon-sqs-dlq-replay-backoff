@@ -42,10 +42,10 @@ def handler(event, context):
         LOG.debug("SQS message attributes cleaned: %s", attributes)
 
         # Backoff
-        b = backoff.ExpoBackoffFullJitter(
+        b = backoff.Backoff(
             base=config.BACKOFF_RATE, 
             cap=config.MESSAGE_RETENTION_PERIOD)
-        delaySeconds = b.backoff(n=int(nbReplay))
+        delaySeconds = b.expo(n=int(nbReplay))
 
         # SQS
         msgreplay = "Message replayed to main SQS queue with delayseconds"
