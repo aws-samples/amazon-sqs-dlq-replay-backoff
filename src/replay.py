@@ -16,7 +16,6 @@ def handler(event, context):
     """Lambda function handler."""
     LOG.info('Received event: %s', event)
     LOG.debug('Main SQS queue ARN: %s', config.SQS_MAIN_URL)
-    LOG.debug('Interval(s): %s', config.INTERVAL_SECONDS)
     LOG.debug('Max attemps: %s', config.MAX_ATTEMPS)
     LOG.debug('Backoff rate: %s', config.BACKOFF_RATE)
     LOG.debug('Message retention period: %s', config.MESSAGE_RETENTION_PERIOD)

@@ -11,7 +11,7 @@ Metadata:
     ReadmeUrl: ./README.md
     Labels: [sqs, dlq, replay, queue, backoff]
     HomePageUrl: https://github.com/aws-samples/amazon-sqs-dlq-replay-backoff
-    SemanticVersion: 1.0.0
+    SemanticVersion: 1.0.1
     SourceCodeUrl: https://github.com/aws-samples/amazon-sqs-dlq-replay-backoff
 
   AWS::CloudFormation::Interface:
