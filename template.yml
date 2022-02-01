@@ -14,76 +14,76 @@ Metadata:
     SemanticVersion: 2.0.0
     SourceCodeUrl: https://github.com/aws-samples/amazon-sqs-dlq-replay-backoff
 
-    AWS::CloudFormation::Interface:
-      ParameterGroups:
-        - Label: 
-            default: "SQS Parameters"
-          Parameters:
-            - MessageRetentionPeriod
-            - MainQueueURL
-            - MainQueueName
-            - DLQArn
-        - Label: 
-            default: "Lambda Parameters"
-          Parameters:
-            - LogLevel
-            - BackoffRate
-            - MaxAttempts
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label: 
+          default: "SQS Parameters"
+        Parameters:
+          - MessageRetentionPeriod
+          - MainQueueURL
+          - MainQueueName
+          - DLQArn
+      - Label: 
+          default: "Lambda Parameters"
+        Parameters:
+          - LogLevel
+          - BackoffRate
+          - MaxAttempts
+
+Parameters:
+  MessageRetentionPeriod:
+    Description: 'The number of seconds that Amazon SQS retains a message. You can
+      specify an integer value from 60 seconds (1 minute) to 1209600 seconds (14 days). This is used in the backoff calculation.'
+    Type: Number
+    Default: 345600
+  MainQueueURL:
+    Type: String
+    Description: The URL of the main queue to which messages will be replayed.
+  MainQueueName:
+    Type: String
+    Description: The Name of the main queue to which messages will be replayed.
+  DLQArn:
+    Type: String
+    Description: The ARN of the DLQ from which messages will be replayed.
+  LogLevel:
+    Type: String
+    Description: Log level for Lambda function logging, e.g., ERROR, INFO, DEBUG, etc
+    Default: DEBUG
+  MaxAttempts:
+    Description: An integer, representing the maximum number of replay attempts . If the error recurs more times than specified, retries cease. A value of 0 (zero) is permitted and indicates that the error or errors should never be retried.
+    Type: Number
+    Default: 3
+  BackoffRate:
+    Description: An integer that is the multiplier by which the replay interval increases on each attempt
+    Type: Number
+    Default: 2
   
-  Parameters:
-    MessageRetentionPeriod:
-      Description: 'The number of seconds that Amazon SQS retains a message. You can
-        specify an integer value from 60 seconds (1 minute) to 1209600 seconds (14 days). This is used in the backoff calculation.'
-      Type: Number
-      Default: 345600
-    MainQueueURL:
-      Type: String
-      Description: The URL of the main queue to which messages will be replayed.
-    MainQueueName:
-      Type: String
-      Description: The Name of the main queue to which messages will be replayed.
-    DLQArn:
-      Type: String
-      Description: The ARN of the DLQ from which messages will be replayed.
-    LogLevel:
-      Type: String
-      Description: Log level for Lambda function logging, e.g., ERROR, INFO, DEBUG, etc
-      Default: DEBUG
-    MaxAttempts:
-      Description: An integer, representing the maximum number of replay attempts . If the error recurs more times than specified, retries cease. A value of 0 (zero) is permitted and indicates that the error or errors should never be retried.
-      Type: Number
-      Default: 3
-    BackoffRate:
-      Description: An integer that is the multiplier by which the replay interval increases on each attempt
-      Type: Number
-      Default: 2
-    
-  Resources:
-    ReplayFunction:
-      Type: AWS::Serverless::Function
-      Properties:
-        CodeUri: src/
-        Handler: replay.handler
-        Runtime: python3.7
-        Tracing: Active
-        Policies:
-          - SQSSendMessagePolicy:
-              QueueName: !Ref MainQueueName
-        Events:
-          MySQSEvent:
-            Type: SQS
-            Properties:
-              Queue: !Ref DLQArn
-              BatchSize: 1
-        Environment:
-          Variables:
-            LOG_LEVEL: !Ref LogLevel
-            SQS_MAIN_URL: !Ref MainQueueURL
-            MAX_ATTEMPS: !Ref MaxAttempts
-            BACKOFF_RATE: !Ref BackoffRate
-            MESSAGE_RETENTION_PERIOD: !Ref MessageRetentionPeriod
-  
-  Outputs:
-    ReplayFunctionArn:
-      Description: "Lambda Function ARN"
-      Value: !GetAtt ReplayFunction.Arn
+Resources:
+  ReplayFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: replay.handler
+      Runtime: python3.7
+      Tracing: Active
+      Policies:
+        - SQSSendMessagePolicy:
+            QueueName: !Ref MainQueueName
+      Events:
+        MySQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !Ref DLQArn
+            BatchSize: 1
+      Environment:
+        Variables:
+          LOG_LEVEL: !Ref LogLevel
+          SQS_MAIN_URL: !Ref MainQueueURL
+          MAX_ATTEMPS: !Ref MaxAttempts
+          BACKOFF_RATE: !Ref BackoffRate
+          MESSAGE_RETENTION_PERIOD: !Ref MessageRetentionPeriod
+
+Outputs:
+  ReplayFunctionArn:
+    Description: "Lambda Function ARN"
+    Value: !GetAtt ReplayFunction.Arn
