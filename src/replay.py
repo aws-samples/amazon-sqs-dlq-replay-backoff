@@ -50,7 +50,18 @@ def handler(event, context):
         msgreplay = "Message replayed to main SQS queue with delayseconds"
         LOG.info(msgreplay + "%s", delaySeconds)
         
-        SQS.send_message(
+        #check for FIFO SQS
+        if config.SQS_MAIN_URL.endswith('.fifo'):
+            if 'MessageGroupId' in record['attributes']:
+                SQS.send_message(
+                    QueueUrl=config.SQS_MAIN_URL,
+                    MessageBody=record['body'],
+                    MessageAttributes=record['messageAttributes'],
+                    MessageGroupId=record['attributes']['MessageGroupId'],
+                    MessageDeduplicationId=record['attributes']['MessageDeduplicationId']
+                )
+        else:
+            SQS.send_message(
             QueueUrl=config.SQS_MAIN_URL,
             MessageBody=record['body'],
             DelaySeconds=int(delaySeconds),
