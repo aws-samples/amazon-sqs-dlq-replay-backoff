@@ -46,6 +46,10 @@ def handler(event, context):
             cap=config.MESSAGE_RETENTION_PERIOD)
         delaySeconds = b.backoff(n=int(nbReplay))
 
+        # If delaySeconds is greater than 900 (SQS limit), put it to 900
+        if int(delaySeconds) > 900:
+            delaySeconds = 900
+
         # SQS
         msgreplay = "Message replayed to main SQS queue with delayseconds"
         LOG.info(msgreplay + "%s", delaySeconds)
